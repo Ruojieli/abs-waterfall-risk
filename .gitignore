@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+# raw EDGAR filings (~900 MB); rebuild with `make data`
+data/raw/
