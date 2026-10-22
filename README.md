@@ -105,10 +105,18 @@ the fixed A-2a.
 **Stress and VaR** (positions: A $50mm, B $10mm, C $10mm and D $5mm face). Under full
 revaluation, a parallel +100bp move costs $1.46mm. Widening spreads by
 +50/100/150/250bp (A/B/C/D) costs $1.49mm, and the 2022 hiking-cycle curve move
-costs $4.95mm. The 1-day 99% historical-simulation VaR is $175,971 (ES $219,574) over 500
-days. That figure is **rates only**: FRED, the source of the credit-spread history, was down
-for maintenance when this report was built. `make data` adds the spread leg once FRED can be
-reached.
+costs $4.95mm. Historical-simulation VaR over 499 days (2024-10-21 to 2026-10-20) applies
+each day's Treasury curve change and rating-matched corporate OAS change, with full
+revaluation:
+
+| 1-day 99% | VaR ($) | ES ($) |
+|---|---:|---:|
+| Rates + spreads | 190,015 | 226,555 |
+| Rates only | 176,179 | 219,574 |
+| Spreads only | 39,112 | 71,633 |
+
+Rates dominate for these near-par, short-duration notes. The combined VaR is below the sum
+of the two legs because rate and spread moves partly offset.
 
 ### FORDO 2026-A: data checks and calibration
 
@@ -191,9 +199,10 @@ and requests are spaced 0.25 seconds apart.
   a pool seasons, so the calibrated CDR (0.39%) is not a lifetime loss forecast. The
   severity rests on about $1.9mm of gross defaults. The recovery lag (3 months) is assumed.
 - **Stress scenarios.** Historical scenarios use actual Treasury curve moves over each
-  window. They include spread moves only if spread history covers the window, which it does
-  not in this build. That is why "2008 Lehman" shows a gain: without the spread leg it
-  captures only the rally in Treasuries. Collateral overlays (CDR, severity, prepay) on
+  window. They would include spread moves if spread history covered the window, but FRED's
+  ICE BofA series now start on 2023-10-23, after all three windows. That is why
+  "2008 Lehman" shows a gain: without the spread leg it captures only the rally in
+  Treasuries. Collateral overlays (CDR, severity, prepay) on
   those windows are assumptions.
 - **VaR.** 1-day horizon, full revaluation on base-case cash flows. The spread leg uses
   ICE BofA corporate OAS by rating (AAA/AA/A/BBB for A/B/C/D) as a proxy. ABS spreads do
@@ -205,4 +214,4 @@ and requests are spaced 0.25 seconds apart.
 |---|---|---|
 | SEC EDGAR, Form ABS-EE (Ex-102) and Form 10-D (Ex-99), CIK 2113024 | Loan tapes and investor reports for FORDO 2026-A | Derived CSVs in `data/fordo2026a/`; raw filings are git-ignored |
 | Treasury.gov daily par yield curve | Pricing curve, rate history | `data/treasury_par_curve.csv` |
-| FRED, ICE BofA US corporate OAS | Spread history for VaR | `data/credit_spreads.csv` when available |
+| FRED, ICE BofA US corporate OAS (AAA/AA/A/BBB), from 2023-10-23 | Spread history for VaR | `data/credit_spreads.csv` |

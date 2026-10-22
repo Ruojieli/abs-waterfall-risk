@@ -96,13 +96,15 @@ Yield at the base-case price as the loss stress rises (base prepay). The 0x colu
 | CDR x4, severity 60% | 0.01 | 0.00 | 0.00 | -0.00 | 5,127 |
 | Recession: rates -100, spreads widen x1.5, CDR x4, sev 60%, prepay x0.75 | 0.37 | -1.67 | -4.07 | -8.57 | -818,284 |
 
-### Historical-simulation VaR (500 days, 2024-10-21 to 2026-10-21)
+### Historical-simulation VaR (499 days, 2024-10-21 to 2026-10-20)
 
-Daily changes in every Treasury par tenor; credit-spread history was unavailable when this report was built, so this is rates-only, applied to today's curve with full revaluation.
+Daily changes in every Treasury par tenor, plus daily changes in ICE BofA corporate OAS by rating (AAA/AA/A/BBB as proxies for A/B/C/D), applied to today's curve with full revaluation.
 
 |  | 1-day 99% VaR ($) | 1-day 99% ES ($) |
 |---|---:|---:|
-| Rates only | 175,971 | 219,574 |
+| Rates + spreads | 190,015 | 226,555 |
+| Rates only | 176,179 | 219,574 |
+| Spreads only | 39,112 | 71,633 |
 
 ## 2. FORDO 2026-A, calibrated to public SEC filings
 
